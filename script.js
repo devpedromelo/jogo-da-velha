@@ -1,66 +1,38 @@
-const jogadorAtual = document.querySelector(".jogador-atual");
-const botoes = document.querySelectorAll(".game button");
+const cellElements = document.querySelectorAll("[data-cell]");
+const board = document.querySelector("[data-board]");
 
-let selected; //armazena os itens já selecionados
-let player = 'X';
+let isCircle = false;
 
-let positions =[
-    [1,2,3],
-    [4,5,6],
-    [7,8,9],
-    [1,4,7],
-    [2,5,8],
-    [3,6,9],
-    [1,5,9],
-    [3,5,7],
-];
+const placeMark = (cell, classToAdd) => {
+    cell.classList.add(classToAdd);
+}
 
-function inicial(){
-    selected = [];
+const swapTurns = () => {
+    isCircle = !isCircle;
 
-    jogadorAtual.innerHTML = `JOGADOR DA VEZ: ${player}`
+    board.classList.remove('circle');
+    board.classList.remove('x');
 
-    botoes.forEach(function(item){
-        item.innerHTML = ''
-        item.addEventListener("click", novoMovimento);
-    });
-};
+    if(isCircle){
+        board.classList.add("circle");
+    }else{
+        board.classList.add("x");
+    }
+}
 
-inicial();
+const handleClick = (e) => {
+    //colocar a marca( X ou O)
+        const cell = e.target;
+        const classToAdd = isCircle ? 'circle' : 'x';
+        placeMark(cell, classToAdd);
+    //checar por vitória
 
-function novoMovimento(e){
-    const index = e.target.getAttribute("data-id");
-    e.target.innerHTML = player;
-    e.target.removeEventListener("click", novoMovimento);
-    selected[index] = player
+    //checar por empate
 
-    setTimeout(()=>{
-        check();
-    }, [100]);
+    //mudar símbolo
+        swapTurns();
+}
 
-    player = player === 'X' ? 'O' : 'X';
-    jogadorAtual.innerHTML = `JOGADOR DA VEZ: ${player}`;
-};
-
-function check(){
-    let ultimoMovimento = player === 'X' ? 'O' : 'X';
-
-    const items = selected
-        .map((item, i) => [item, i])
-        .filter((item) => item[0] === ultimoMovimento)
-        .map((item) => item[1]);
-
-        for(pos of positions) {
-            if(pos.every((item) => items.includes(item))){
-                alert(`O JOGADOR ${ultimoMovimento} GANHOU!`);
-                inicial();
-                return;
-            }
-        }
-
-        if(selected.filter((item) => item).length === 9) {
-            alert("DEU EMPATE!");
-            inicial();
-            return;
-        }
+for (const cell of cellElements) {
+    cell.addEventListener("click", handleClick, {once: true});//permite executar essa função apenas uma vez
 }
