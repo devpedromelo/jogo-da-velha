@@ -1,11 +1,58 @@
 const cellElements = document.querySelectorAll("[data-cell]");
 const board = document.querySelector("[data-board]");
 
-let isCircle = false;
+const winnngMessage = document.querySelector("[data-winning-message]");
+const winnngMessageText = document.querySelector("[data-winning-message-text]");
+const btnRestart = document.querySelector("[data-restart-button]");
+
+let isCircle;
+
+const winnerCombinations = [
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,3,6],
+    [1,4,7],
+    [2,5,8],
+    [0,4,8],
+    [2,4,6],
+];
+
+const startGame = () => {
+    for (const cell of cellElements) {
+        cell.addEventListener("click", handleClick, {once: true});//permite executar essa função apenas uma vez
+    }
+
+    isCircle = false;
+
+    board.classList.add("x");
+};
+
+const endGame = (isDraw) => {
+    if (isDraw) {
+        winnngMessageText.innerText = 'Empate'
+    } else {
+        winnngMessageText.innerText = isCircle
+        ? 'O Venceu!'
+        : 'X Venceu!';
+    };
+
+    winnngMessage.classList.add("show-winning-message");
+};
+
+const checkForWin = (currentPlayer) => {
+    //some = parâmetro que determina se a função de retorno de chamada especificada retorna true para qualquer elemento de uma matriz.
+    return winnerCombinations.some(combination => {
+        //verificando se alguma combinação da array de objetos está preenchida
+        return combination.every(index => {
+            return cellElements[index].classList.contains(currentPlayer);
+        })
+    });
+};
 
 const placeMark = (cell, classToAdd) => {
     cell.classList.add(classToAdd);
-}
+};
 
 const swapTurns = () => {
     isCircle = !isCircle;
@@ -18,7 +65,7 @@ const swapTurns = () => {
     }else{
         board.classList.add("x");
     }
-}
+};
 
 const handleClick = (e) => {
     //colocar a marca( X ou O)
@@ -26,13 +73,14 @@ const handleClick = (e) => {
         const classToAdd = isCircle ? 'circle' : 'x';
         placeMark(cell, classToAdd);
     //checar por vitória
-
+        const isWin = checkForWin(classToAdd);
+        if(isWin){
+            endGame(false)
+        }
     //checar por empate
-
+        
     //mudar símbolo
         swapTurns();
-}
+};
 
-for (const cell of cellElements) {
-    cell.addEventListener("click", handleClick, {once: true});//permite executar essa função apenas uma vez
-}
+startGame()
