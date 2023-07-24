@@ -28,6 +28,20 @@ const startGame = () => {
     board.classList.add("x");
 };
 
+const restartGame = () => {
+    winnngMessage.classList.remove("show-winning-message");
+    board.classList.remove('circle');
+    board.classList.remove('x');
+    for(const cell of cellElements){
+        cell.classList.remove('x');
+        cell.classList.remove('circle');
+    }
+
+    startGame()
+};
+
+btnRestart.addEventListener("click", restartGame);
+
 const endGame = (isDraw) => {
     if (isDraw) {
         winnngMessageText.innerText = 'Empate'
@@ -46,7 +60,13 @@ const checkForWin = (currentPlayer) => {
         //verificando se alguma combinação da array de objetos está preenchida
         return combination.every(index => {
             return cellElements[index].classList.contains(currentPlayer);
-        })
+        });
+    });
+};
+
+const checkForDraw = () => {
+    return [...cellElements].every(cell => {
+        return cell.classList.contains("x") || cell.classList.contains("circle");
     });
 };
 
@@ -72,15 +92,18 @@ const handleClick = (e) => {
         const cell = e.target;
         const classToAdd = isCircle ? 'circle' : 'x';
         placeMark(cell, classToAdd);
-    //checar por vitória
+
+    //checar por vitória e empate
         const isWin = checkForWin(classToAdd);
+        const isDraw = checkForDraw();
         if(isWin){
-            endGame(false)
+            endGame(false);
+        }else if(isDraw){
+            endGame(true);
         }
-    //checar por empate
-        
+    
     //mudar símbolo
         swapTurns();
 };
 
-startGame()
+startGame();
