@@ -6,14 +6,22 @@
   
   body {
     height: 100vh;
-    width: 100vw;
-    background: linear-gradient(
-      90deg,
-      rgba(65, 185, 131, 1) 0%,
-      rgba(0, 212, 255, 1) 100%
-    );
+    width: 98vw;
+    background: linear-gradient( 90deg, rgb(37 18 55) 0%, rgb(5 110 135) 100% );
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  h1{
+    color: #eeee;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 12%;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.275);
   }
   
+  /*board*/
   .board {
     display: grid;
     width: 100%;
@@ -24,6 +32,7 @@
     justify-items: center;
     align-items: center;
     grid-template-columns: repeat(3, auto);
+    margin-top: -180px;
   }
   
   .board.x .cell:not(.x):not(.circle):hover::after,/*o not() serve para identificar quais classes não podem ser afetadas por certa configuração*/
@@ -71,6 +80,22 @@
   .cell:nth-child(6),
   .cell:nth-child(9) {
     border-right: none;
+  }
+
+/*backcell*/
+
+  .backcell{
+    background-color: #747474;
+    min-width: 30%;
+    max-width: 50%;
+    height: 45%;
+    position: absolute;
+    /* left: 32.4%; */
+    /* top: 27%; */
+    margin: auto;
+    border-radius: 15px;
+    box-shadow: 3px 3px 15px #00000030;
+    z-index: -1;
   }
   
   /* X */
@@ -145,4 +170,64 @@
   
   .show-winning-message {
     display: flex;
+  }
+
+  @media screen and (min-width: 340px) {
+    .backcell{
+      min-width: 90%;
+    }
+  }
+
+  @media screen and (min-width: 450px) {
+    .backcell{
+      min-width: 79%;
+    }
+  }
+
+  @media screen and (min-width: 510px) {
+    .backcell{
+      min-width: 69%;
+    }
+  }
+
+  @media screen and (min-width: 600px) {
+    .backcell{
+      min-width: 59%;
+    }
+  }
+
+  @media screen and (min-width: 700px) {
+    .backcell{
+      min-width: 49%;
+    }
+  }
+
+  @media screen and (min-width: 800px) {
+    .backcell{
+      min-width: 45%;
+    }
+  }
+
+  @media screen and (min-width: 900px) {
+    .backcell{
+      min-width: 35%;
+    }
+  }
+
+  @media screen and (min-width: 1040px) {
+    .backcell{
+      min-width: 30%;
+    }
+  }
+
+  @media screen and (min-width: 1100px) {
+    .backcell{
+      min-width: 28%;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    .backcell{
+      min-width: 26%;
+    }
   }
